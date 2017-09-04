@@ -84,7 +84,7 @@ def _variable_with_weight_decay(name, shape, initializer, wd):
     tf.add_to_collection('losses', weight_decay)
   return var
 
-def writeImage(image, filename): 
+def writeImage(image, filename):
     """ store label data to colored image """
     Sky = [128,128,128]
     Building = [128,0,0]
@@ -92,11 +92,18 @@ def writeImage(image, filename):
     Road_marking = [255,69,0]
     Road = [128,64,128]
     Pavement = [60,40,222]
+    Tree = [128,128,0]
+    SignSymbol = [192,128,128]
+    Fence = [64,64,128]
+    Car = [64,0,128]
+    Pedestrian = [64,64,0]
+    Bicyclist = [0,128,192]
+    Unlabelled = [0,0,0]
     r = image.copy()
     g = image.copy()
     b = image.copy()
-    label_colours = np.array([Sky, Building, Pole, Road, Road_marking, Pavement])
-    for l in range(0,6):
+    label_colours = np.array([Sky, Building, Pole, Road, Pavement, Tree, SignSymbol, Fence, Car, Pedestrian, Bicyclist, Unlabelled])
+    for l in range(0,11):
         r[image==l] = label_colours[l,0]
         g[image==l] = label_colours[l,1]
         b[image==l] = label_colours[l,2]
