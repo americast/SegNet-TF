@@ -5,7 +5,7 @@ FLAGS = tf.app.flags.FLAGS
 
 tf.app.flags.DEFINE_string('testing', '', """ checkpoint file """)
 tf.app.flags.DEFINE_string('finetune', '', """ finetune checkpoint file """)
-tf.app.flags.DEFINE_integer('batch_size', "5", """ batch_size """)
+tf.app.flags.DEFINE_integer('batch_size', "3", """ batch_size """)
 tf.app.flags.DEFINE_float('learning_rate', "1e-3", """ initial lr """)
 tf.app.flags.DEFINE_string('log_dir', "/tmp3/first350/TensorFlow/Logs", """ dir to store ckpt """)
 tf.app.flags.DEFINE_string('image_dir', "/tmp3/first350/SegNet-Tutorial/CamVid/train.txt", """ path to CamVid image """)

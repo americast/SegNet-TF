@@ -15,7 +15,6 @@ def _activation_summary(x):
   """
   # session. This helps the clarity of presentation on tensorboard.
   tensor_name = re.sub('%s_[0-9]*/' % TOWER_NAME, '', x.op.name)
-
   tf.summary.histogram(tensor_name + '/activations', x)
   tf.summary.scalar(tensor_name + '/sparsity', tf.nn.zero_fraction(x))
 
@@ -40,7 +39,6 @@ def _add_loss_summaries(total_loss):
   for l in losses + [total_loss]:
     # Name each loss as '(raw)' and name the moving average version of the loss
     # as the original loss name.
-
     tf.summary.scalar(l.op.name +' (raw)', l)
     tf.summary.scalar(l.op.name, loss_averages.average(l))
 
@@ -57,7 +55,7 @@ def _variable_on_cpu(name, shape, initializer):
   Returns:
     Variable Tensor
   """
-  with tf.device('/cpu:0'):
+  with tf.device('/gpu:0'):
     var = tf.get_variable(name, shape, initializer=initializer)
   return var
 
@@ -86,7 +84,7 @@ def _variable_with_weight_decay(name, shape, initializer, wd):
     tf.add_to_collection('losses', weight_decay)
   return var
 
-def writeImage(image, filename):
+def writeImage(image, filename): 
     """ store label data to colored image """
     Sky = [128,128,128]
     Building = [128,0,0]
