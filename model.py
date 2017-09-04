@@ -208,12 +208,26 @@ def inference(images, labels, batch_size, phase_train):
     # pool4
     pool4, pool4_indices = tf.nn.max_pool_with_argmax(conv4, ksize=[1, 2, 2, 1],
                            strides=[1, 2, 2, 1], padding='SAME', name='pool4')
+
+    # conv5
+    conv5 = conv_layer_with_bn(pool4, [7, 7, 64, 64], phase_train, name="conv5")
+
+    # pool5
+    pool5, pool5_indices = tf.nn.max_pool_with_argmax(conv5, ksize=[1, 2, 2, 1],
+                           strides=[1, 2, 2, 1], padding='SAME', name='pool5')
+
+    # conv4
+    conv6 = conv_layer_with_bn(pool5, [7, 7, 64, 64], phase_train, name="conv6")
+
+    # pool4
+    pool6, pool6_indices = tf.nn.max_pool_with_argmax(conv4, ksize=[1, 2, 2, 1],
+                           strides=[1, 2, 2, 1], padding='SAME', name='pool6')
     """ End of encoder """
     """ start upsample """
     # upsample4
     # Need to change when using different dataset out_w, out_h
     # upsample4 = upsample_with_pool_indices(pool4, pool4_indices, pool4.get_shape(), out_w=45, out_h=60, scale=2, name='upsample4')
-    upsample4 = deconv_layer(pool4, [2, 2, 64, 64], [batch_size, 45, 60, 64], 2, "up4")
+    upsample4 = deconv_layer(pool6, [2, 2, 64, 64], [batch_size, 45, 60, 64], 2, "up4")
     # decode 4
     conv_decode4 = conv_layer_with_bn(upsample4, [7, 7, 64, 64], phase_train, False, name="conv_decode4")
 
