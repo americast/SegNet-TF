@@ -15,6 +15,7 @@ from Utils import _variable_with_weight_decay, _variable_on_cpu, _add_loss_summa
 from Inputs import *
 
 
+
 """ legacy code for tf bug in missing gradient with max_pool_argmax """
 @ops.RegisterGradient("MaxPoolWithArgmax")
 def _MaxPoolWithArgmaxGrad(op, grad, unused_argmax_grad):
@@ -164,8 +165,13 @@ def get_deconv_filter(f_shape):
   return tf.get_variable(name="up_filter", initializer=init,
                          shape=weights.shape)
 
-def deconv_layer(inputT, f_shape, output_shape, stride=2, name=None):
+def deconv_layer(inputT, f_shape, output_shape, stride=2, name=None, pool_indices=[0]):
   # output_shape = [b, w, h, c]
+  print  ("ejdfiejdiejfiejfiejfiejfiejfiefviefcienfnvicknvikfviknfief pool indices")
+  # sess_temp = tf.InteractiveSession()
+  sess_temp = tf.global_variables_initializer()
+  with sess_temp.as_default():
+    print(sess_temp.run(pool_indices))
   strides = [1, stride, stride, 1]
   with tf.variable_scope(name):
     weights = get_deconv_filter(f_shape)
@@ -210,24 +216,24 @@ def inference(images, labels, batch_size, phase_train):
                            strides=[1, 2, 2, 1], padding='SAME', name='pool4')
 
     # conv5
-    conv5 = conv_layer_with_bn(pool4, [7, 7, 64, 64], phase_train, name="conv5")
+    # conv5 = conv_layer_with_bn(pool4, [7, 7, 64, 64], phase_train, name="conv5")
 
-    # pool5
-    pool5, pool5_indices = tf.nn.max_pool_with_argmax(conv5, ksize=[1, 2, 2, 1],
-                           strides=[1, 2, 2, 1], padding='SAME', name='pool5')
+    # # pool5
+    # pool5, pool5_indices = tf.nn.max_pool_with_argmax(conv5, ksize=[1, 2, 2, 1],
+    #                        strides=[1, 2, 2, 1], padding='SAME', name='pool5')
 
-    # conv4
-    conv6 = conv_layer_with_bn(pool5, [7, 7, 64, 64], phase_train, name="conv6")
+    # # conv4
+    # conv6 = conv_layer_with_bn(pool5, [7, 7, 64, 64], phase_train, name="conv6")
 
-    # pool4
-    pool6, pool6_indices = tf.nn.max_pool_with_argmax(conv4, ksize=[1, 2, 2, 1],
-                           strides=[1, 2, 2, 1], padding='SAME', name='pool6')
+    # # pool4
+    # pool6, pool6_indices = tf.nn.max_pool_with_argmax(conv4, ksize=[1, 2, 2, 1],
+    #                        strides=[1, 2, 2, 1], padding='SAME', name='pool6')
     """ End of encoder """
     """ start upsample """
     # upsample4
     # Need to change when using different dataset out_w, out_h
     # upsample4 = upsample_with_pool_indices(pool4, pool4_indices, pool4.get_shape(), out_w=45, out_h=60, scale=2, name='upsample4')
-    upsample4 = deconv_layer(pool6, [2, 2, 64, 64], [batch_size, 45, 60, 64], 2, "up4")
+    upsample4 = deconv_layer(pool4, [2, 2, 64, 64], [batch_size, 45, 60, 64], 2, "up4", pool4_indices)
     # decode 4
     conv_decode4 = conv_layer_with_bn(upsample4, [7, 7, 64, 64], phase_train, False, name="conv_decode4")
 
