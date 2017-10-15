@@ -40,7 +40,7 @@ IMAGE_HEIGHT = 360
 IMAGE_WIDTH = 480
 IMAGE_DEPTH = 3
 
-NUM_CLASSES = 11
+NUM_CLASSES = 12
 NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN = 367
 NUM_EXAMPLES_PER_EPOCH_FOR_TEST = 101
 NUM_EXAMPLES_PER_EPOCH_FOR_EVAL = 1
@@ -122,7 +122,8 @@ def cal_loss(logits, labels):
       0.6823,
       6.2478,
       7.3614,
-    ]) # class 0~10
+      1.0974
+    ]) # class 0~11
 
     labels = tf.cast(labels, tf.int32)
     # return loss(logits, labels)
@@ -167,11 +168,8 @@ def get_deconv_filter(f_shape):
 
 def deconv_layer(inputT, f_shape, output_shape, stride=2, name=None, pool_indices=[0]):
   # output_shape = [b, w, h, c]
-  print  ("ejdfiejdiejfiejfiejfiejfiejfiefviefcienfnvicknvikfviknfief pool indices")
   # sess_temp = tf.InteractiveSession()
   sess_temp = tf.global_variables_initializer()
-  with sess_temp.as_default():
-    print(sess_temp.run(pool_indices))
   strides = [1, stride, stride, 1]
   with tf.variable_scope(name):
     weights = get_deconv_filter(f_shape)
