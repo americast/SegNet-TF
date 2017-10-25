@@ -85,6 +85,8 @@ def weighted_loss(logits, labels, num_classes, head=None):
     """ median-frequency re-weighting """
     with tf.name_scope('loss'):
 
+        # print (logits, labels)
+
         logits = tf.reshape(logits, (-1, num_classes))
 
         epsilon = tf.constant(value=1e-10)
