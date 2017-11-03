@@ -86,18 +86,18 @@ def _variable_with_weight_decay(name, shape, initializer, wd):
 
 def writeImage(image, filename):
     """ store label data to colored image """
-    Sky = [128,128,128]
-    Building = [128,0,0]
-    Pole = [192,192,128]
+    Sky = [128,128,128]                   #0
+    Building = [128,0,0]                #1
+    Pole = [192,192,128]                 #2
     Road_marking = [255,69,0]
-    Road = [128,64,128]
-    Pavement = [60,40,222]
-    Tree = [128,128,0]
-    SignSymbol = [192,128,128]
-    Fence = [64,64,128]
-    Car = [64,0,128]
-    Pedestrian = [64,64,0]
-    Bicyclist = [0,128,192]
+    Road = [128,64,128]                   #3
+    Pavement = [60,40,222]             #4
+    Tree = [128,128,0]                     #5
+    SignSymbol = [192,128,128]     #6
+    Fence = [64,64,128]                   #7
+    Car = [64,0,128]                        #8
+    Pedestrian = [64,64,0]            #9
+    Bicyclist = [0,128,192]          #10
     Unlabelled = [0,0,0]
     r = image.copy()
     g = image.copy()
