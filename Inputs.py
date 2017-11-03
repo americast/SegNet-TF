@@ -100,13 +100,18 @@ def get_filename_list(path):
 
 def CamVidInputs(image_filenames, label_filenames, batch_size):
 
+  # print("Label file names: "+str(label_filenames))
   images = ops.convert_to_tensor(image_filenames, dtype=dtypes.string)
   labels = ops.convert_to_tensor(label_filenames, dtype=dtypes.string)
+
 
   filename_queue = tf.train.slice_input_producer([images, labels], shuffle=True)
 
   image, label = CamVid_reader(filename_queue)
   reshaped_image = tf.cast(image, tf.float32)
+  # sess = tf.InteractiveSession()
+  # tf.Print(label,[label],"Label here: ")
+  # print ("Label here: "+str(label.eval(session = sess)))
 
   min_fraction_of_examples_in_queue = 0.4
   min_queue_examples = int(NUM_EXAMPLES_PER_EPOCH_FOR_TRAIN *

@@ -103,7 +103,7 @@ def writeImage(image, filename):
     g = image.copy()
     b = image.copy()
     label_colours = np.array([Sky, Building, Pole, Road, Pavement, Tree, SignSymbol, Fence, Car, Pedestrian, Bicyclist, Unlabelled])
-    for l in range(11):
+    for l in range(12):
         r[image==l] = label_colours[l,0]
         g[image==l] = label_colours[l,1]
         b[image==l] = label_colours[l,2]
