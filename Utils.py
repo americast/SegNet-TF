@@ -136,7 +136,7 @@ def get_hist(predictions, labels):
     hist += fast_hist(labels[i].flatten(), predictions[i].argmax(2).flatten(), num_class)
   return hist
 
-def print_hist_summery(hist):
+def print_hist_summary(hist):
   acc_total = np.diag(hist).sum() / hist.sum()
   print ('accuracy = %f'%np.nanmean(acc_total))
   iu = np.diag(hist) / (hist.sum(1) + hist.sum(0) - np.diag(hist))

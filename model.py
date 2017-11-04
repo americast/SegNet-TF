@@ -11,7 +11,7 @@ from PIL import Image
 from math import ceil
 from tensorflow.python.ops import gen_nn_ops
 # modules
-from Utils import _variable_with_weight_decay, _variable_on_cpu, _add_loss_summaries, _activation_summary, print_hist_summery, get_hist, per_class_acc, writeImage
+from Utils import _variable_with_weight_decay, _variable_on_cpu, _add_loss_summaries, _activation_summary, print_hist_summary, get_hist, per_class_acc, writeImage
 from Inputs import *
 
 
@@ -309,7 +309,7 @@ def test(FLAGS):
   train_dir = FLAGS.log_dir # /tmp3/first350/TensorFlow/Logs
   test_dir = FLAGS.test_dir # /tmp3/first350/SegNet-Tutorial/CamVid/train.txt
   test_ckpt = FLAGS.testing
-  image_w = FLAGS.image_wogi
+  image_w = FLAGS.image_w
   image_h = FLAGS.image_h
   image_c = FLAGS.image_c
   # testing should set BATCH_SIZE = 1
@@ -342,6 +342,28 @@ def test(FLAGS):
     saver.restore(sess, test_ckpt )
 
     images, labels = get_all_test_data(image_filenames, label_filenames)
+
+    # arr = labels.eval()
+    # print("Arr is: "+str(labels))
+    # print("Type is: "+str(type(labels)))
+    # print("Size is: "+str(len(labels)))
+    print("Hiding foreground in testing data.")
+    for h in range(len(labels)):
+      arr = labels[h]
+      # print ("Each size is: "+str(i.shape))
+      maxi = 0
+      for i in range(arr.shape[0]):
+        for j in range(arr.shape[1]):
+          for k in range(arr.shape[2]):
+            for l in range(arr.shape[3]):
+              if (arr[i,j,k,l] > maxi): maxi = arr[i,j,k,l]
+              if (arr[i,j,k,l]==2 or arr[i,j,k,l]==3 or arr[i,j,k,l]==4 or arr[i,j,k,l]==6 or arr[i,j,k,l]==8 or arr[i,j,k,l]==9 or arr[i,j,k,l]==10):
+                  arr[i,j,k,l] = 11
+              # print("Here: "+str(arr[i,j,k,l]))
+      print ("Processed: "+str(h+1)+"/"+str(len(labels)))
+      labels[h] = arr
+    # labels = tf.convert_to_tensor(arr)
+
 
     threads = tf.train.start_queue_runners(sess=sess)
     hist = np.zeros((NUM_CLASSES, NUM_CLASSES))
@@ -516,7 +538,7 @@ def training(FLAGS, is_finetune=False):
           test_summary_str = sess.run(average_summary, feed_dict={average_pl: total_val_loss / TEST_ITER})
           acc_summary_str = sess.run(acc_summary, feed_dict={acc_pl: acc_total})
           iu_summary_str = sess.run(iu_summary, feed_dict={iu_pl: np.nanmean(iu)})
-          print_hist_summery(hist)
+          print_hist_summary(hist)
           print(" end validating.... ")
 
           summary_str = sess.run(summary_op, feed_dict=feed_dict)
