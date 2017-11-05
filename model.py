@@ -450,7 +450,7 @@ def training(FLAGS, is_finetune=False):
               for k in range(arr.shape[2]):
                 for l in range(arr.shape[3]):
                   if (arr[i,j,k,l] > maxi): maxi = arr[i,j,k,l]
-                  if (arr[i,j,k,l]==2 or arr[i,j,k,l]==3 or arr[i,j,k,l]==4 or arr[i,j,k,l]==6 or arr[i,j,k,l]==8 or arr[i,j,k,l]==9 or arr[i,j,k,l]==10):
+                  if (arr[i,j,k,l]==2 or arr[i,j,k,l]==4 or arr[i,j,k,l]==6 or arr[i,j,k,l]==8 or arr[i,j,k,l]==9 or arr[i,j,k,l]==10):
                       arr[i,j,k,l] = 11
                   # print("Here: "+str(arr[i,j,k,l]))
           print ("Maximum in training: "+str(maxi))
@@ -466,7 +466,7 @@ def training(FLAGS, is_finetune=False):
               for k in range(arr.shape[2]):
                 for l in range(arr.shape[3]):
                   if (arr[i,j,k,l] > maxi): maxi = arr[i,j,k,l]
-                  if (arr[i,j,k,l]==2 or arr[i,j,k,l]==3 or arr[i,j,k,l]==4 or arr[i,j,k,l]==6 or arr[i,j,k,l]==8 or arr[i,j,k,l]==9 or arr[i,j,k,l]==10):
+                  if (arr[i,j,k,l]==2  or arr[i,j,k,l]==4 or arr[i,j,k,l]==6 or arr[i,j,k,l]==8 or arr[i,j,k,l]==9 or arr[i,j,k,l]==10):
                       arr[i,j,k,l] = 11
                   # print("Here: "+str(arr[i,j,k,l]))
           print ("Maximum in validation: "+str(maxi))

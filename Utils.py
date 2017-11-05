@@ -131,6 +131,16 @@ def fast_hist(a, b, n):
 def get_hist(predictions, labels):
   num_class = predictions.shape[3]
   batch_size = predictions.shape[0]
+
+  for i in range(batch_size):
+    for j in range(predictions.shape[1]):
+      for k in range(predictions.shape[2]):
+        for l in range(num_class):
+          # if (predictions[i,j,k,l] > maxi): maxi = predictions[i,j,k,l]
+          if (predictions[i,j,k,l]==2 or predictions[i,j,k,l]==3 or predictions[i,j,k,l]==4 or predictions[i,j,k,l]==6 or predictions[i,j,k,l]==8 or predictions[i,j,k,l]==9 or predictions[i,j,k,l]==10):
+              predictions[i,j,k,l] = 11
+  print("Num class: "+str(num_class))
+  
   hist = np.zeros((num_class, num_class))
   for i in range(batch_size):
     hist += fast_hist(labels[i].flatten(), predictions[i].argmax(2).flatten(), num_class)
@@ -150,8 +160,21 @@ def print_hist_summary(hist):
 
 def per_class_acc(predictions, label_tensor):
     labels = label_tensor
+    print("Shape of prediction: "+str(predictions.shape))
+    # arr = val_labels.eval()
+    # print("Shape is: "+str(arr.shape))
+    # maxi = 0
     size = predictions.shape[0]
     num_class = predictions.shape[3]
+
+    for i in range(size):
+      for j in range(predictions.shape[1]):
+        for k in range(predictions.shape[2]):
+          for l in range(num_class):
+            # if (predictions[i,j,k,l] > maxi): maxi = predictions[i,j,k,l]
+            if (predictions[i,j,k,l]==2 or predictions[i,j,k,l]==3 or predictions[i,j,k,l]==4 or predictions[i,j,k,l]==6 or predictions[i,j,k,l]==8 or predictions[i,j,k,l]==9 or predictions[i,j,k,l]==10):
+                predictions[i,j,k,l] = 11
+    print("Num class: "+str(num_class))
     hist = np.zeros((num_class, num_class))
     for i in range(size):
       hist += fast_hist(labels[i].flatten(), predictions[i].argmax(2).flatten(), num_class)
